@@ -8,13 +8,15 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 class Shader{
-public: 
+public:
     unsigned int programId;
 
     // Constructor
-    Shader(const char* vertexPath, const char* shaderPath) {
+    Shader(const std::string vertexPath, const std::string shaderPath) {
         // Retrieve vertex and fragment shader source code from file vertexPath and fragmentPath
         std::string vertexCode;
         std::string fragmentCode;
@@ -27,8 +29,8 @@ public:
 
         try {
             // Open files
-            vShaderFile.open(vertexPath);
-            fShaderFile.open(shaderPath);
+            vShaderFile.open(fs::absolute(vertexPath).c_str());
+            fShaderFile.open(fs::absolute(shaderPath).c_str());
             std::stringstream vShaderStream, fShaderStream;
 
             // Read file's buffer contents into streams
@@ -50,11 +52,10 @@ public:
         const char* vShaderCode = vertexCode.c_str();
         const char* fShaderCode = fragmentCode.c_str();
 
-        // Compile shaders 
+        // Compile shaders
         unsigned int vertexShader, fragmentShader;
         int success;
         char infoLog[512];
-
 
         // Vertex shaders
         vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -90,7 +91,7 @@ public:
             std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
         }
 
-        // Deleting Shaders 
+        // Deleting Shaders
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
     }
@@ -102,14 +103,14 @@ public:
 
     // utility functions
 
-    void setBool(const std::string &name, bool value) const {         
-        glUniform1i(glGetUniformLocation(programId, name.c_str()), (int)value); 
+    void setBool(const std::string &name, bool value) const {
+        glUniform1i(glGetUniformLocation(programId, name.c_str()), (int)value);
     }
-    void setInt(const std::string &name, int value) const { 
-        glUniform1i(glGetUniformLocation(programId, name.c_str()), value); 
+    void setInt(const std::string &name, int value) const {
+        glUniform1i(glGetUniformLocation(programId, name.c_str()), value);
     }
-    void setFloat(const std::string &name, float value) const { 
-        glUniform1f(glGetUniformLocation(programId, name.c_str()), value); 
+    void setFloat(const std::string &name, float value) const {
+        glUniform1f(glGetUniformLocation(programId, name.c_str()), value);
     }
     void setVec4(const std::string &name, float x, float y, float z, float w) const {
         glUniform4f(glGetUniformLocation(programId, name.c_str()), x, y, z, w);

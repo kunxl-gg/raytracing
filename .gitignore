@@ -1,3 +1,4 @@
 bin/
 .vscode/
 Makefile
+compile_flags.txt
