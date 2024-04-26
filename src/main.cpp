@@ -114,7 +114,7 @@ int main() {
         shader.setVec4("lightColor", lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 
         glm::mat4 model = glm::mat4(1.0f); // Identity matrix by default
-        glm::mat4 view = glm::lookAt(cameraPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)mode->width / (float)mode->height, 0.1f, 100.0f);
         shader.setMat4("model", model);
         shader.setMat4("view", view);

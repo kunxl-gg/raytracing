@@ -1,14 +1,22 @@
+ROOT_DIR = $(shell pwd)
+OS = $(shell uname)
+
 BUILD_DIR = ./bin
 APP_NAME = build
 C_FILES = ./src/*.cpp
 IMGUI_FILES = ./includes/imgui/*.cpp
-ROOT_DIR = $(shell pwd)
-GLAD_FILE = $(ROOT_DIR)/includes/glad.c
+GLAD_FILE = ./includes/glad.c
 
 CXX := clang++
-CXXFLAGS := -std=c++20 -lglfw3 -lassimp -framework Cocoa -framework OpenGL -framework IOKit
-APP_INCLUDES:= -I$(ROOT_DIR)/includes/ -I/$(ROOT_DIR)/includes/imgui/
-APP_LINKERS:= -L$(ROOT_DIR)/lib/
+APP_INCLUDES:= -I./includes/ -I./includes/imgui/
+APP_LINKERS:= -L./lib/
+
+# OS specific settings
+ifeq ($(OS), Darwin)
+	CXXFLAGS := -std=c++20 -lglfw3 -lassimp -framework Cocoa -framework OpenGL -framework IOKit
+else ifeq ($(OS), Linux)
+	CXXFLAGS = -std=c++20 -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lXcursor -lassimp
+endif
 
 # Define targets
 all: $(BUILD_DIR)/$(APP_NAME)
