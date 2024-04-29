@@ -12,7 +12,7 @@
 #include <stb_image.h>
 
 #include <utils/shader.hpp>
-
+#include <utils/ray.h>
 // Camera Position
 glm::vec3 cameraPos = glm::vec3(0.0f, 2.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
